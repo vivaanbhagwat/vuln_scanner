@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Report Management{% endblock %}
+
+{% block content %}
+<div class="mt-4">
+    <div class="glass-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <h4 class="fw-700 mb-0"><i class="bi bi-flag me-2 text-warning"></i>Report Management</h4>
+            <div class="d-flex gap-2">
+                <select class="form-select form-select-sm glass-input" onchange="window.location.search='?status='+this.value">
+                    <option value="">All Statuses</option>
+                    <option value="pending" {% if status == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="reviewed" {% if status == 'reviewed' %}selected{% endif %}>Reviewed</option>
+                    <option value="resolved" {% if status == 'resolved' %}selected{% endif %}>Resolved</option>
+                </select>
+            </div>
+        </div>
+        
+        {% if reports.items %}
+            {% for report in reports.items %}
+            <div class="glass-card-inner p-4 mb-3">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <span class="fw-700">{{ report.user.username }}</span>
+                        <span class="text-muted small ms-2">{{ report.created_at.strftime('%b %d, %Y %H:%M') }}</span>
+                        {% if report.scan %}
+                            <a href="{{ url_for('scan.scan_result', scan_id=report.scan_id) }}" class="text-accent small ms-2">
+                                <i class="bi bi-link-45deg"></i>View Scan
+                            </a>
+                        {% endif %}
+                    </div>
+                    <span class="badge {% if report.status == 'pending' %}bg-warning text-dark{% elif report.status == 'reviewed' %}bg-info{% else %}bg-success{% endif %}">
+                        {{ report.status }}
+                    </span>
+                </div>
+                
+                <p class="mb-2" style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;">
+                    {{ report.message }}
+                </p>
+                
+                {% if report.admin_response %}
+                <div class="mb-2 p-2 rounded" style="background: rgba(0,212,255,0.05); border-left: 3px solid #00d4ff;">
+                    <small class="text-accent fw-600"><i class="bi bi-reply me-1"></i>Admin Response:</small>
+                    <p class="mb-0 small">{{ report.admin_response }}</p>
+                </div>
+                {% endif %}
+                
+                <form method="POST" action="{{ url_for('admin.update_report_status', report_id=report.id) }}" class="d-flex gap-2 align-items-end flex-wrap">
+                    <div class="flex-grow-1">
+                        <input type="text" class="form-control form-control-sm glass-input" name="admin_response" 
+                               placeholder="Admin response (optional)..." value="{{ report.admin_response or '' }}">
+                    </div>
+                    <select class="form-select form-select-sm glass-input" name="status" style="width:130px;">
+                        <option value="pending" {% if report.status == 'pending' %}selected{% endif %}>Pending</option>
+                        <option value="reviewed" {% if report.status == 'reviewed' %}selected{% endif %}>Reviewed</option>
+                        <option value="resolved" {% if report.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-accent"><i class="bi bi-check-lg me-1"></i>Update</button>
+                </form>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                <p>No reports found.</p>
+            </div>
+        {% endif %}
+
+        {% if reports.pages > 1 %}
+        <nav class="mt-3">
+            <ul class="pagination pagination-sm justify-content-center mb-0">
+                {% if reports.has_prev %}<li class="page-item"><a class="page-link" href="?page={{ reports.prev_num }}&status={{ status }}">Prev</a></li>{% endif %}
+                {% for p in reports.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                    {% if p %}<li class="page-item {% if p == reports.page %}active{% endif %}"><a class="page-link" href="?page={{ p }}&status={{ status }}">{{ p }}</a></li>
+                    {% else %}<li class="page-item disabled"><span class="page-link">...</span></li>{% endif %}
+                {% endfor %}
+                {% if reports.has_next %}<li class="page-item"><a class="page-link" href="?page={{ reports.next_num }}&status={{ status }}">Next</a></li>{% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

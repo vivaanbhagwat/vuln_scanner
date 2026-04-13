@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-5 col-lg-4">
+        <div class="glass-card p-5 auth-card">
+            <div class="text-center mb-4">
+                <div class="auth-icon mb-3">
+                    <i class="bi bi-person-plus-fill fs-1 text-accent"></i>
+                </div>
+                <h2 class="fw-700">Create Account</h2>
+                <p class="text-muted">Join CyberShield to start scanning</p>
+            </div>
+            
+            <form method="POST" action="{{ url_for('auth.signup') }}" id="signupForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label small fw-600">
+                        <i class="bi bi-person me-1"></i>Username
+                    </label>
+                    <input type="text" class="form-control glass-input" id="username" name="username" 
+                           value="{{ username|default('') }}" required minlength="3" 
+                           placeholder="Choose a username" autocomplete="username">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label small fw-600">
+                        <i class="bi bi-envelope me-1"></i>Email
+                    </label>
+                    <input type="email" class="form-control glass-input" id="email" name="email"
+                           value="{{ email|default('') }}" required
+                           placeholder="your@email.com" autocomplete="email">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label small fw-600">
+                        <i class="bi bi-lock me-1"></i>Password
+                    </label>
+                    <div class="input-group">
+                        <input type="password" class="form-control glass-input" id="password" name="password"
+                               required minlength="8" placeholder="Min 8 chars, mixed case + symbols" autocomplete="new-password">
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password')">
+                            <i class="bi bi-eye" id="password-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength mt-2" id="passwordStrength"></div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="confirm_password" class="form-label small fw-600">
+                        <i class="bi bi-lock-fill me-1"></i>Confirm Password
+                    </label>
+                    <input type="password" class="form-control glass-input" id="confirm_password" 
+                           name="confirm_password" required placeholder="Repeat password" autocomplete="new-password">
+                </div>
+                
+                <button type="submit" class="btn btn-accent w-100 py-2 fw-600">
+                    <i class="bi bi-shield-check me-2"></i>Create Account
+                </button>
+            </form>
+            
+            <p class="text-center text-muted mt-4 mb-0 small">
+                Already have an account? 
+                <a href="{{ url_for('auth.login') }}" class="text-accent text-decoration-none fw-600">Login</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

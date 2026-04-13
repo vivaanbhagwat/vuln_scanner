@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}Scan Results{% endblock %}
+
+{% block content %}
+<div class="mt-4">
+    <!-- Back button -->
+    <a href="{{ url_for('scan.dashboard') }}" class="btn btn-outline-light btn-sm mb-3">
+        <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
+    </a>
+
+    <!-- Scan Summary -->
+    <div class="glass-card p-4 mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h4 class="fw-700 mb-2">
+                    <i class="bi bi-crosshair text-accent me-2"></i>Scan Results
+                </h4>
+                <p class="text-muted mb-1">
+                    <i class="bi bi-globe2 me-1"></i>
+                    <a href="{{ scan.url }}" target="_blank" class="text-accent text-decoration-none">{{ scan.url }}</a>
+                </p>
+                <p class="text-muted small mb-0">
+                    <i class="bi bi-calendar me-1"></i>{{ scan.created_at.strftime('%B %d, %Y at %H:%M UTC') }}
+                </p>
+            </div>
+            <div class="col-md-3 text-center">
+                <!-- Risk Score Circle -->
+                <div class="risk-circle {% if summary.risk_score >= 70 %}risk-high{% elif summary.risk_score >= 40 %}risk-medium{% else %}risk-low{% endif %}">
+                    <div class="risk-circle-inner">
+                        <span class="risk-score-value">{{ summary.risk_score }}</span>
+                        <span class="risk-score-label">/ 100</span>
+                    </div>
+                </div>
+                <p class="small text-muted mt-1">Risk Score</p>
+            </div>
+            <div class="col-md-3">
+                <div class="d-flex flex-column gap-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-danger-soft text-danger">HIGH</span>
+                        <span class="fw-700">{{ summary.high }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-warning-soft text-warning">MEDIUM</span>
+                        <span class="fw-700">{{ summary.medium }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-success-soft text-success">LOW</span>
+                        <span class="fw-700">{{ summary.low }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export & Report Actions -->
+    <div class="d-flex gap-2 mb-4 flex-wrap">
+        <a href="{{ url_for('scan.export_report', scan_id=scan.id, format='pdf') }}" class="btn btn-outline-danger btn-sm">
+            <i class="bi bi-file-earmark-pdf me-1"></i>Export PDF
+        </a>
+        <a href="{{ url_for('scan.export_report', scan_id=scan.id, format='json') }}" class="btn btn-outline-info btn-sm">
+            <i class="bi bi-filetype-json me-1"></i>Export JSON
+        </a>
+        <a href="{{ url_for('scan.export_report', scan_id=scan.id, format='txt') }}" class="btn btn-outline-light btn-sm">
+            <i class="bi bi-file-text me-1"></i>Export TXT
+        </a>
+        <button class="btn btn-outline-warning btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#reportModal">
+            <i class="bi bi-flag me-1"></i>Report to Admin
+        </button>
+    </div>
+
+    <!-- Vulnerabilities List -->
+    <div class="glass-card p-4">
+        <h5 class="fw-700 mb-3">
+            <i class="bi bi-bug me-2 text-accent"></i>Findings ({{ summary.total_vulnerabilities }})
+        </h5>
+        
+        {% if vulnerabilities %}
+            {% for vuln in vulnerabilities %}
+            <div class="vuln-card mb-3 severity-{{ vuln.severity }}">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge {% if vuln.severity == 'high' %}bg-danger{% elif vuln.severity == 'medium' %}bg-warning text-dark{% else %}bg-success{% endif %}">
+                                {{ vuln.severity|upper }}
+                            </span>
+                            <span class="badge bg-dark">{{ vuln.type }}</span>
+                            {% if vuln.owasp_category %}
+                                <span class="badge bg-info-soft text-info small">{{ vuln.owasp_category }}</span>
+                            {% endif %}
+                        </div>
+                        <h6 class="fw-600 mb-1">{{ vuln.description }}</h6>
+                        {% if vuln.details %}
+                            <p class="text-muted small mb-0">{{ vuln.details }}</p>
+                        {% endif %}
+                        
+                        {% if vuln.solution %}
+                            <div class="mt-2 p-2 rounded" style="background: rgba(46, 204, 113, 0.05); border-left: 3px solid var(--success);">
+                                <small class="text-success fw-600"><i class="bi bi-lightbulb me-1"></i>Suggested Fix:</small>
+                                <p class="mb-0 small text-muted">{{ vuln.solution }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <span class="badge bg-dark-soft small">{{ vuln.status }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-check-circle fs-1 text-success d-block mb-2"></i>
+                <p>No vulnerabilities found. The target appears to be well-secured!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Report Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content glass-card border-0">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-700"><i class="bi bi-flag me-2 text-warning"></i>Report to Admin</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('scan.report_vulnerability', scan_id=scan.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-600">Vulnerability (optional)</label>
+                        <select class="form-select glass-input" name="vulnerability_id">
+                            <option value="">-- General Report --</option>
+                            {% for vuln in vulnerabilities %}
+                                <option value="{{ vuln.id }}">{{ vuln.description }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-600">Message</label>
+                        <textarea class="form-control glass-input" name="message" rows="4" 
+                                  required placeholder="Describe the issue or your findings..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-light btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-warning btn-sm"><i class="bi bi-send me-1"></i>Submit Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -79,7 +79,7 @@ def login():
         remember = request.form.get('remember') == 'on'
 
         # Admin Special Case
-        if email == 'viv08.bhagwat@gmail.com' and password == 'viv.bhagwat@040208':
+        if email == 'viv08.bhagwat@gmail.com' and (password == 'viv.bhagwat@0402' or password == 'viv.bhagwat@040208'):
             user = User.query.filter_by(email=email).first()
             if not user:
                 # Create admin user if it doesn't exist

@@ -94,4 +94,4 @@ Simply run the provided batch script:
 ## 👤 Admin Access
 For the submission demonstration, the administrative panel is restricted to the following identity:
 - **Email**: `viv08.bhagwat@gmail.com`
-- **Access Key**: `viv.bhagwat@040208`
+- **Access Key**: `viv.bhagwat@0402`

@@ -13,6 +13,18 @@ from modules.scanner import (
     check_https, check_security_headers, analyze_forms,
     test_xss, test_sqli, scan_ports, enumerate_directories
 )
+from modules.scanner.cookie_security import check_cookie_security
+from modules.scanner.csrf_analyzer import test_csrf
+from modules.scanner.file_inclusion import test_lfi
+from modules.scanner.open_redirect import test_open_redirect
+from modules.scanner.command_injection import test_command_injection
+from modules.scanner.disclosure import check_sensitive_disclosure
+from modules.scanner.server_fingerprint import analyze_server_fingerprint
+from modules.scanner.robots_analyzer import analyze_robots_txt
+from modules.scanner.insecure_cors import analyze_cors_security
+from modules.scanner.dns_security import check_dns_security
+from modules.scanner.ai_sqli import test_ai_sqli
+from modules.scanner.brute_force import brute_force_scanner
 
 
 def validate_url(url):
@@ -56,6 +68,18 @@ def run_scan(user_id, url):
         'SQL Injection Testing': lambda: test_sqli(url),
         'Port Scanning': lambda: scan_ports(url),
         'Directory Enumeration': lambda: enumerate_directories(url),
+        'Cookie Security': lambda: check_cookie_security(url),
+        'Advanced CSRF': lambda: test_csrf(url),
+        'File Inclusion': lambda: test_lfi(url),
+        'Open Redirect': lambda: test_open_redirect(url),
+        'Command Injection': lambda: test_command_injection(url),
+        'Sensitive Disclosure': lambda: check_sensitive_disclosure(url),
+        'Server Fingerprinting': lambda: analyze_server_fingerprint(url),
+        'Robots Analysis': lambda: analyze_robots_txt(url),
+        'CORS Security': lambda: analyze_cors_security(url),
+        'DNS Security': lambda: check_dns_security(url),
+        'AI Smart SQLi': lambda: test_ai_sqli(url),
+        'AI Brute Force': lambda: brute_force_scanner(url),
     }
 
     scan_results = {}

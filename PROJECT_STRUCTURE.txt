@@ -1,0 +1,49 @@
+PROJECT STRUCTURE & FILE MEANINGS - CYBERSHIELD
+==============================================
+
+What is the main part?
+----------------------
+The "Brain" of the project is `modules/scan_engine.py`. This orchestrator talks to all the different scanners (SQL, XSS, etc.) and gathers their results into the database.
+
+FILE-BY-FILE EXPLANATION:
+-------------------------
+
+Root Directory:
+- app.py: This is the STARTING POINT. It sets up the Website server and connects all the routes and database together.
+- start.bat: A shortcut to turn on the project. It checks if the Python environment is set up and starts the server.
+- requirements.txt: A list of "ingredients" (libraries) the project needs to work.
+- config.py: Holds the settings like where the database is located.
+
+models/ (The Databases):
+- user.py: Handles everything about users (Signup, Login, Password Reset).
+- scan.py: Stores the details of every scan you run (the URL, the time, the risk score).
+- vulnerability.py: Stores the individual bugs found (the description, severity, and advice).
+- report.py: Keeps track of the feedback and PDF reports generated.
+
+routes/ (The Website Pages):
+- auth_routes.py: Manages the Login, Signup, and Forgot Password pages.
+- scan_routes.py: Manages the Dashboard where you start scans and view results.
+- admin_routes.py: The private section for the Admin to see all users and all scans.
+- api_routes.py: A hidden way for the frontend to get data from the backend.
+
+modules/ (The Logic):
+- scan_engine.py: The manager that runs all the tests at once.
+- report_generator.py: The tool that turns scan data into a nice PDF file.
+- security_utils.py: Protective logic that stops people from attacking our site (Rate Limiting).
+
+modules/scanner/ (The Attack Tools):
+- ai_sqli.py: A "Smart" scanner that changes its style based on the target technology.
+- brute_force.py: Tries common passwords to see if a login is weak.
+- xss.py: Checks for script injection bugs.
+- sqli.py: Basic check for database injection bugs.
+- file_inclusion.py: Checks if an attacker can read private files on the server.
+- command_injection.py: Checks if an attacker can run computer commands on the server.
+- open_redirect.py: Checks if the site can be used to trick people into visiting fake sites.
+- disclosure.py: Looks for "secret" files like .env or .git that programmers forgot to hide.
+- dns_security.py: Checks for domain security settings like SPF and DMARC.
+- headers.py & https_check.py: Checks if the site is encrypted and has good generic security settings.
+
+templates/ (The UI):
+- base.html: The "Frame" of the website that and holds the top bar and styling.
+- dashboard.html: The main control room where you start scans.
+- scan_result.html: The page that shows you exactly what bugs were found.

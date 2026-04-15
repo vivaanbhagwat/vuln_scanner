@@ -14,6 +14,11 @@ def create_app(config_name=None):
 
     app = Flask(__name__)
     app.config.from_object(config_map.get(config_name, config_map['default']))
+    
+    # Session Security
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
+    app.config['SESSION_COOKIE_SECURE'] = False
+    app.config['PERMANENT_SESSION_LIFETIME'] = 3600
 
     # Ensure instance folder exists
     os.makedirs(os.path.join(app.root_path, 'instance'), exist_ok=True)
@@ -38,8 +43,12 @@ def create_app(config_name=None):
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(scan_bp)
-    app.register_blueprint(admin_bp)
+    app.register_blueprint(admin_bp, url_prefix='/cyber_admin_secure_99') # Obfuscated Admin URL
     app.register_blueprint(api_bp)
+    
+    @app.errorhandler(429)
+    def too_many_requests(e):
+        return render_template('errors/429.html'), 429
 
     @app.after_request
     def add_security_headers(response):

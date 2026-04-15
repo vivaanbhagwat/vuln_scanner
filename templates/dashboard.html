@@ -68,9 +68,49 @@
         </div>
     </div>
 
+    <!-- Advanced Ethical Hacker Tools -->
+    <div class="row g-3 mb-4">
+        <div class="col-12">
+            <div class="glass-card p-4 border-accent-soft">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-700 mb-0">
+                        <i class="bi bi-robot me-2 text-accent"></i>Advanced Ethical Hacker Suite
+                        <span class="badge bg-accent-soft text-accent ms-2">v2.0 (AI Powered)</span>
+                    </h5>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <div class="p-3 bg-dark-soft rounded border border-secondary border-opacity-25">
+                            <h6 class="small fw-700 mb-1">AI Smart SQLi</h6>
+                            <p class="text-muted smaller mb-0">Context-aware injection adapted to target stack.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3 bg-dark-soft rounded border border-secondary border-opacity-25">
+                            <h6 class="small fw-700 mb-1">Brute-Force Engine</h6>
+                            <p class="text-muted smaller mb-0">Threaded credential testing for login forms.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3 bg-dark-soft rounded border border-secondary border-opacity-25">
+                            <h6 class="small fw-700 mb-1">Protocol Analysis</h6>
+                            <p class="text-muted smaller mb-0">10+ new protocols including LFI, CMDi, and DNS Sec.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3 bg-dark-soft rounded border border-secondary border-opacity-25">
+                            <h6 class="small fw-700 mb-1">Threat Intelligence</h6>
+                            <p class="text-muted smaller mb-0">Collated attack patterns and vulnerability mapping.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scan Input -->
     <div class="glass-card p-4 mb-4 scan-input-card">
-        <h5 class="fw-700 mb-3"><i class="bi bi-crosshair me-2 text-accent"></i>New Scan</h5>
+        <h5 class="fw-700 mb-3"><i class="bi bi-crosshair me-2 text-accent"></i>New Professional Scan</h5>
         <form method="POST" action="{{ url_for('scan.start_scan') }}" id="scanForm">
             <div class="input-group input-group-lg">
                 <span class="input-group-text glass-input-addon">
@@ -80,12 +120,12 @@
                        placeholder="Enter target URL (e.g., https://example.com)" 
                        required autocomplete="url">
                 <button type="submit" class="btn btn-accent px-4 fw-600" id="scanBtn">
-                    <i class="bi bi-play-fill me-1"></i>Scan
+                    <i class="bi bi-shield-shaded me-1"></i>Start Advanced Scan
                 </button>
             </div>
             <small class="text-muted mt-2 d-block">
                 <i class="bi bi-info-circle me-1"></i>
-                Only scan websites you have permission to test. Scanning takes 15-60 seconds.
+                V2 Engine Active: 15+ Advanced modules and AI heuristics will be applied.
             </small>
         </form>
     </div>

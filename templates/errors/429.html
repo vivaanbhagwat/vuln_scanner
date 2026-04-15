@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Limit Exceeded{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-6 col-lg-5 text-center">
+        <div class="glass-card p-5 border-danger">
+            <div class="mb-4">
+                <div class="display-1 text-danger mb-3">
+                    <i class="bi bi-shield-slash-fill"></i>
+                </div>
+                <h1 class="fw-800 text-white">Access Temporarily Restricted</h1>
+                <p class="lead text-muted">For your security, we've detected too many attempts from your location. Your access has been paused to prevent unauthorized activity.</p>
+            </div>
+            
+            <div class="alert glass-alert bg-danger-subtle border-danger-subtle mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-clock-history fs-3 me-3 text-danger"></i>
+                    <div class="text-start">
+                        <strong class="text-white d-block">Cooldown in Effect</strong>
+                        <span class="text-muted small">Please wait a few minutes before trying again.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-3">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light py-2 fw-600">
+                    <i class="bi bi-arrow-left me-2"></i>Back to Login
+                </a>
+                <div class="hr-text text-muted my-2">OR</div>
+                <a href="{{ url_for('auth.forgot_password') }}" class="btn btn-accent py-2 fw-600">
+                    <i class="bi bi-key me-2"></i>Reset Your Password
+                </a>
+            </div>
+            
+            <p class="text-muted mt-4 mb-0 small">
+                If you believe this is an error, please contact your security administrator.
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hr-text {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .hr-text::before, .hr-text::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .hr-text:not(:empty)::before { margin-right: .5em; }
+    .hr-text:not(:empty)::after { margin-left: .5em; }
+    
+    .border-danger {
+        border: 1px solid rgba(220, 53, 69, 0.3) !important;
+        box-shadow: 0 0 20px rgba(220, 53, 69, 0.1);
+    }
+</style>
+{% endblock %}

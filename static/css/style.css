@@ -367,19 +367,29 @@ body {
     box-shadow: 0 16px 50px rgba(0, 0, 0, 0.3);
 }
 
-/* --- Auth Card --- */
+/* --- Auth Card Premium Styles --- */
 .auth-card {
     max-width: 440px;
     margin: 0 auto;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.1);
+    animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .auth-icon {
-    width: 70px; height: 70px;
-    background: rgba(0, 212, 255, 0.1);
-    border-radius: 20px;
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(155, 89, 182, 0.15));
+    border-radius: 24px;
     display: flex; align-items: center; justify-content: center;
     margin: 0 auto;
-    border: 1px solid rgba(0, 212, 255, 0.15);
+    border: 1px solid rgba(0, 212, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
 }
 
 /* --- Password Strength --- */
@@ -496,3 +506,42 @@ body {
 .vuln-card:nth-child(2) { animation-delay: 0.05s; }
 .vuln-card:nth-child(3) { animation-delay: 0.1s; }
 .vuln-card:nth-child(4) { animation-delay: 0.15s; }
+
+/* --- Additional Premium Utilities --- */
+.animate-pulse {
+    animation: animate-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes animate-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
+}
+
+.shadow-accent {
+    box-shadow: 0 0 20px var(--accent-glow) !important;
+}
+
+.hover-white:hover {
+    color: #fff !important;
+}
+
+.transition-all {
+    transition: all 0.3s ease !important;
+}
+
+.tracking-wider {
+    letter-spacing: 0.05em !important;
+}
+
+.text-muted-50 {
+    color: rgba(156, 163, 175, 0.5) !important;
+}
+
+.animate-glow {
+    animation: glow shadow 3s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 5px var(--accent-glow); }
+    to { box-shadow: 0 0 20px var(--accent); }
+}

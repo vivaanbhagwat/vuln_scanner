@@ -1,0 +1,35 @@
+DEVELOPMENT LOG: TRIAL, ERROR, & EFFORT
+======================================
+
+Phase 1: Environment & Migration (The First Hurdles)
+--------------------------------------------------
+Error: The project was originally configured for a different Python version, and when I moved it to my new laptop, the ".venv" was broken (configured for Python 3.14 which was unavailable).
+Action: I tried to run it, but nothing worked. I had to manually delete the old environment and rebuild it from scratch using Python 3.12.7 (the most stable version).
+Effort: Re-installed all dependencies and updated the `start.bat` to handle environment checks automatically so it doesn't fail again.
+
+Phase 2: Database Drama
+-----------------------
+Error: I needed to add the "Forgot Password" feature, which required new columns in the database (reset_token). 
+Trial: I tried using the `sqlite3` command directly in the terminal to update the database. 
+Error: The terminal said "sqlite3 command not found". 
+Action: Instead of giving up, I wrote a custom Python script to talk to the database and manually ADD the columns using code. This worked perfectly.
+
+Phase 3: The Indentation Trap
+----------------------------
+Error: After adding the "Rate Limiter" to secure the site, the entire application crashed with an "IndentationError".
+Cause: A single line in `security_utils.py` was off by 4 spaces.
+Fixed: Carefully reviewed the file, fixed the indentation, and restarted. This showed me that even a tiny mistake can stop a big project!
+
+Phase 4: Site Exposure & Hardening
+---------------------------------
+Note: I realized the "Admin" page was at `/admin`, which is too easy for hackers to guess. 
+Effort: I took the extra step to "Obfuscate" it. I moved it to `/cyber_admin_secure_99` and added a Rate Limiter. Now, if someone tries to guess the password, the site blocks their IP address.
+
+Phase 5: AI & Modules Expansion
+-------------------------------
+Trial: The original scanner was very basic. I wanted to make it "AI-like".
+Logic Change: I moved from simple "if/then" rules to technology-based detection. I made the SQL scanner check if the site is PHP or ASP first before choosing which attack to use. This makes it much smarter and faster.
+
+CONCLUSION:
+-----------
+Every error I hit made the tool stronger. By fixing the database manually and securing the admin routes, I turned a simple scanner into a professional ethical hacking tool.

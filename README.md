@@ -74,14 +74,14 @@ Simply run the provided batch script:
     ```bash
     python app.py
     ```
-5.  **Access**: Open `http://localhost:8080` in your browser.
+5.  **Access**:start the start_bat file in terminal(drag it in powershell/cmd) to start the project
 
 ---
 
 ## ⚠️ Disclaimer & Limitations
 
 > [!WARNING]
-> **LEGAL NOTICE**: This tool is for **EDUCATIONAL AND AUTHORIZED SECURITY TESTING PURPOSES ONLY**. 
+> **NOTICE**: This tool is for **EDUCATIONAL AND AUTHORIZED SECURITY TESTING PURPOSES ONLY**. 
 > Running this tool against targets without explicit written permission is illegal and unethical. The developer assumes no liability for misuse.
 
 ### Current Project Status
@@ -91,7 +91,3 @@ Simply run the provided batch script:
 
 ---
 
-## 👤 Admin Access
-For the submission demonstration, the administrative panel is restricted to the following identity:
-- **Email**: `viv08.bhagwat@gmail.com`
-- **Access Key**: `viv.bhagwat@0402`
